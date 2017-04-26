@@ -1,0 +1,43 @@
+{% extends 'layout_article.twig' %}
+
+
+{% block navivation %}
+
+  <nav>
+    <ul>
+      <li><a href="home"><span class="active glyphicon glyphicon-home"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-comment"></span></a></li>
+      <li><a href="edit-profile"><span class="glyphicon glyphicon-user"></span></a></li>
+
+      {% if data[0][1] != 3 %}
+
+      <li><a href="add-article"><span class="square"><span class="glyphicon glyphicon-pencil"></span></span></a></li>
+    
+      {% endif %}
+      
+    </ul>
+  </nav>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="article">
+
+{% for article in data[0][0] %}
+
+<div class="title">
+	<h1>{{ article.title }}</h1>
+</div>
+
+<div id="bloc-article">
+
+   	<div><img data-src="{{ article.image }}" class="image_article" /></div>
+	<div class="description">{{ article.content }}{{ article.comment }}</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+{% endblock %}

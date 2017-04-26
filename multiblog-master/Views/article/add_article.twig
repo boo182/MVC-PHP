@@ -1,0 +1,58 @@
+{% extends 'layout_index.twig' %}
+
+
+{% block navivation %}
+
+  <nav>
+    <ul>
+      <li><a href="home"><span class="active glyphicon glyphicon-home"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-comment"></span></a></li>
+      <li><a href="edit-profile"><span class="glyphicon glyphicon-user"></span></a></li>
+
+      {% if data[0][2] != 3 %}
+
+      <li><a href="add-article"><span class="square"><span class="glyphicon glyphicon-pencil"></span></span></a></li>
+    
+      {% endif %}
+      
+    </ul>
+  </nav>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="login-form">
+
+	<h1>ADD BLOG</h1>
+	<form method="POST" action="">
+		<input type="text" placeholder="Blog name" name="blogname" value=""><br/>
+		<input type="submit" value="ADD BLOG" name="add_blog" class="btn btn-success">
+	</form>
+	<br/>
+	<br/>
+	<br/>
+
+	<h1>ADD ARTICLE</h1>
+	<form method="POST" action="">
+		<select name="blog" style="text-transform:capitalize">
+		<option value="0">Choose a blog</option>
+		{% for blogs in data[0][1] %}
+		<option value="{{ blogs.id }}">{{ blogs.name }}</option>
+		{% endfor %}
+		</select><br/>
+		<input type="text" placeholder="Title" name="title" value=""><br/>
+		<input type="text" placeholder="Image (url)" name="image" value=""><br/>
+		<textarea name="content">Description..</textarea><br/>
+		<select name="category" style="text-transform:capitalize">
+			<option value="0">Choose a cateogry</option>
+			{% for categories in data[0][0] %}
+			<option value="{{ categories.id }}">{{ categories.name }}</option>
+			{% endfor %}
+		</select><br/>
+		<input type="text" placeholder="Tags" name="tags" value=""><br/>
+		<input type="submit" value="ADD ARTICLE" name="add_article" class="btn btn-success">
+	</form>
+</div> 
+
+{% endblock %}

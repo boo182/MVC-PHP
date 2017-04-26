@@ -1,0 +1,29 @@
+{% extends 'layout_index.twig' %}
+
+{% block navivation %}
+
+  <nav>
+    <ul>
+      <li><a href="home"><span class="active glyphicon glyphicon-home"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-comment"></span></a></li>
+      <li><a href="edit-profile"><span class="glyphicon glyphicon-user"></span></a></li>
+
+      <li><a href="add-article"><span class="square"><span class="glyphicon glyphicon-pencil"></span></span></a></li>
+    
+      
+    </ul>
+  </nav>
+
+{% endblock %}
+
+{% block content %}
+  <h1>LISTING USERS</h1>
+  <ul>
+{% for user in data[0] %}
+
+      <li><a href="edituser/{{ user.id }}">{{ user.username }}</a></li>
+
+{% endfor %}
+</ul>
+</div> 
+{% endblock %}

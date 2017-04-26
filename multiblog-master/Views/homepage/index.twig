@@ -1,0 +1,96 @@
+{% extends 'layout_index.twig' %}
+
+
+{% block categories %}
+
+<div id="sub-nav">
+  <ul>
+    <li>Our categories :</li>
+
+{% for category in data[0][0] %}
+
+  <li><a href ="category/{{ category.id }}">{{ category.name }}</a></li>
+
+{% endfor %}
+
+<li>
+<form action="#">
+ 
+  <div class="select-box">
+    
+    <label for="select-box1" class="label select-box1"><span class="label-desc">Filter by :</span> </label>
+    <select id="select-box1" class="select">
+      <option value="Choice 1">Date</option>
+      <option value="Choice 2">Rate</option>
+      <option value="Choice 3">Popularity</option>
+    </select>
+    
+  </div>
+   
+</form> 
+    </li>
+  </ul>
+</div>
+
+{% endblock %}
+
+
+
+
+{% block navivation %}
+
+  <nav>
+    <ul>
+      <li><a href="home"><span class="active glyphicon glyphicon-home"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-comment"></span></a></li>
+      <li><a href="edit-profile"><span class="glyphicon glyphicon-user"></span></a></li>
+
+      {% if data[0][2] != 3 %}
+
+      <li><a href="add-article"><span class="square"><span class="glyphicon glyphicon-pencil"></span></span></a></li>
+    
+      {% endif %}
+      
+    </ul>
+  </nav>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="title">
+  <h1>LIKE & SHARE</h1>
+  <span>The most sharing blog</span>
+</div> 
+<div class="grid" data-masonry=''>
+{% for articles in data[0][1] %}
+
+  <div class="grid-item1">
+    <div class="userprofil">
+      <ul>
+        <li><img src="{{ articles.avatar }}" width="30" height="30" /></li>
+        <li><a href="blog/{{ articles.blog_id }}">{{ articles.username }}</a></li>
+        <li><a href="#" class="subscribe">Subscribe</a></li>
+      </ul>   
+    </div>
+    <div class="picture">
+
+      {% if articles.category_id == 7 %}
+
+        <a href="{{ articles.image }}" class="popup-youtube"><img data-src="http://eie-ales-nordgard.fr/wp-content/uploads/Video-Icon-crop-1.png" width="300"  /></a>
+      {% else %}
+        <a href="{{ articles.image }}" class="image-popup-no-margins"><img data-src="{{ articles.image }}" width="300" height="300" /></a>   
+      {% endif %}
+    </div>
+    <div class="hashtags">
+      <a href="#">{{ articles.tags }}</a>
+    </div>
+    <div class="rate">
+      <div>{{ articles.likes }} notes</div>
+      <div><a href="like/{{ articles.id }}"><span class="favorite glyphicon glyphicon-heart" rate="{{ articles.likes }}" id="{{ articles.id }}"></span></a></div>
+    </div>
+  </div>
+
+{% endfor %}
+</div>
+{% endblock %}

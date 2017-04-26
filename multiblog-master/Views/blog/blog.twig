@@ -1,0 +1,61 @@
+{% extends 'layout_blog.twig' %}
+
+
+{% block navivation %}
+
+  <nav>
+    <ul>
+      <li><a href="home"><span class="active glyphicon glyphicon-home"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-comment"></span></a></li>
+      <li><a href="edit-profile"><span class="glyphicon glyphicon-user"></span></a></li>
+
+      {% if data[0][2] != 3 %}
+
+      <li><a href="add-article"><span class="square"><span class="glyphicon glyphicon-pencil"></span></span></a></li>
+    
+      {% endif %}
+      
+    </ul>
+  </nav>
+
+{% endblock %}
+
+
+{% block content %}
+
+{% for info in data[0][1] %}
+
+<div class="title">
+	<h1>{{ info.blog_name }}</h1>
+</div>
+
+<div id="blog_page">
+
+
+
+<div class="bloc_user">
+	 <div class="avatar"><img src="{{ info.avatar }}" class="image_article" /></div>
+	 <div class="userinfo">{{ info.username }}</div>
+</div>
+
+{% endfor %}
+
+
+
+<div class="article">
+
+{% for article in data[0][0] %}
+
+<h2>{{ article.title }}</h2>
+
+   		<div><img data-src="{{ article.image }}" class="image_article" /></div>
+		<div class="description">{{ article.content }}
+		<div class="more"><a href="article/{{ article.id }}" target="_SELF">Voir l'article</a></div>
+		</div>
+
+
+{% endfor %}
+
+   </div>
+</div>
+{% endblock %}

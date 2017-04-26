@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>Like & Share</title>
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Anton|Roboto" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+<link rel="stylesheet" type="text/css" href="../vendor/css/likeshare.css"/>
+<link rel="stylesheet" type="text/css" href="../vendor/js/lazyload/lazyload.css"/>
+<link rel="stylesheet" type="text/css" href="../vendor/js/magnificpopup/magnificpopup.css"/>
+
+</head>
+<body>
+
+<header>
+<span class="logo">L&S</span>
+<span class="search_logo glyphicon glyphicon-search"></span>
+<div id="search">
+  <form action="javascript:void(0);" method="get">
+
+            <input type="text" required value="search like & share" onBlur="if(this.value=='')this.value='search like & share'" onFocus="if(this.value=='search like & share')this.value='' "> <!-- JS because of IE support; better: placeholder="search" -->
+
+            <input type="hidden" value="">
+
+        </form>
+</div>
+
+
+  <nav>
+    <ul>
+      <li><a href="home"><span class="active glyphicon glyphicon-home"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-comment"></span></a></li>
+      <li><a href="edit-profile"><span class="glyphicon glyphicon-user"></span></a></li>
+
+      {% if data[0][1] != 3 %}
+
+      <li><a href="add-article"><span class="square"><span class="glyphicon glyphicon-pencil"></span></span></a></li>
+    
+      {% endif %}
+      
+    </ul>
+  </nav>
+
+
+<div style="padding-right:10px;"><a href="logout" style="color:white" class="btn btn-warning">logout</a></div>
+</header>
+
+{% block categories %}
+{% endblock %}
+
+{% block content %}
+
+{% for user in data[0][0] %}
+
+<div class="login-form">
+<div class="text-center" >
+<img src="{{ user.avatar }}"/>
+</div>
+  <h1>{{ user.username }}</h1>
+  <form method="POST" action="">
+    <input type="text" placeholder="First name" name="firstname" value="{{ user.firstname }}"><br/>
+    <input type="text" placeholder="Last name" name="lastname" value="{{ user.lastname }}"><br/>
+    <input type="text" placeholder="Username" name="username" value="{{ user.username }}"><br/>
+    <input type="text" placeholder="Email" name="email" value="{{ user.email }}"><br/>
+    <input type="text" placeholder="Avatar (url)" name="avatar" value="{{ user.avatar }}"><br/>
+    <select name="level" style="text-transform:capitalize">
+    <option value="0">Choose level</option>
+    {% for level in data[0][1] %}
+    <option value="{{ level.id }}">{{ level.level }}</option>
+    {% endfor %}
+    </select><br/>
+    <input type="submit" value="MODIFICATION" class="btn btn-success"><br>
+    <a href="delete/{{ user.id }}" class="btn btn-danger">DELETE ACCOUNT</a>
+  </form>
+</div> 
+
+{% endfor %}
+
+{% endblock %}
+
+<footer>
+<ul>
+  <li><a href="#">Conditions générales</a></li>
+  <li><a href="#">Mentions légales</a></li>
+  <li><a href="#">Confidentialité</a></li>
+  <li><a href="#">Support</a></li>
+</ul> 
+</footer>
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script src="https://www.chiropraxieparis.com/sites/default/files/likeshare/js/lazyload/lazyload.js"></script>
+<script src="https://www.chiropraxieparis.com/sites/default/files/likeshare/js/magnificpopup/magnificpopup.js"></script>
+<script type="text/javascript">
+  $('.grid').masonry({
+  // options
+  itemSelector: '.grid-item1',
+  columnWidth: 200,
+});
+
+$("select").on("click" , function() {
+  
+  $(this).parent(".select-box").toggleClass("open");
+  
+});
+
+$(document).ready(function() {
+
+    $(document).mouseup(function (e)
+    {
+        var container = $(".select-box");
+
+        if (container.has(e.target).length === 0)
+        {
+            container.removeClass("open");
+        }
+    });
+
+
+    $("select").on("change" , function() {
+      
+      var selection = $(this).find("option:selected").text(),
+          labelFor = $(this).attr("id"),
+          label = $("[for='" + labelFor + "']");
+        
+      label.find(".label-desc").html(selection);
+        
+    });
+
+        $('.image-popup-no-margins').magnificPopup({
+          type: 'image',
+          closeOnContentClick: true,
+          closeBtnInside: false,
+          fixedContentPos: true,
+          mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+          image: {
+            verticalFit: true
+          },
+          zoom: {
+            enabled: false,
+            duration: 300 // don't foget to change the duration also in CSS
+          }
+        });
+
+$(".favorite").on("click" , function() {
+
+  var rate = $(this).attr("rate");
+  var article_id = $(this).attr("id");
+
+  //alert(rate);
+
+  $.ajax({
+      url : 'updaterate.php',
+      type : 'POST',
+      dataType : 'text',
+      data: 'rate=' + rate + '& article_id=' + article_id,
+      success : function(data, statut){
+
+          //alert(data);              
+       
+      },
+
+      error : function(data, statut, erreur){
+
+    $(".error").append("<div class='alert alert-danger'><strong>Error: </strong>" + erreur + "</div>"); 
+
+      },
+
+      
+       complete : function(data, statut){
+
+         }
+    })
+
+});
+
+ $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+          disableOn: 700,
+          type: 'iframe',
+          mainClass: 'mfp-fade',
+          removalDelay: 160,
+          preloader: false,
+
+          fixedContentPos: false
+        });
+
+      });
+</script>
+</body>
+</html>

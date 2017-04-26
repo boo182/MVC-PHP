@@ -1,0 +1,44 @@
+{% extends 'layout_index.twig' %}
+
+{% block navivation %}
+
+  <nav>
+    <ul>
+      <li><a href="home"><span class="active glyphicon glyphicon-home"></span></a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-comment"></span></a></li>
+      <li><a href="edit-profile"><span class="glyphicon glyphicon-user"></span></a></li>
+
+      {% if data[0][1] != 3 %}
+
+      <li><a href="add-article"><span class="square"><span class="glyphicon glyphicon-pencil"></span></span></a></li>
+    
+      {% endif %}
+      
+    </ul>
+  </nav>
+
+{% endblock %}
+
+{% block content %}
+
+{% for user in data[0][0] %}
+
+<div class="login-form">
+<div class="text-center" >
+<img src="{{ user.avatar }}"/>
+</div>
+	<h1>{{ user.username }}</h1>
+	<form method="POST" action="">
+		<input type="text" placeholder="First name" name="firstname" value="{{ user.firstname }}"><br/>
+		<input type="text" placeholder="Last name" name="lastname" value="{{ user.lastname }}"><br/>
+		<input type="text" placeholder="Username" name="username" value="{{ user.username }}"><br/>
+		<input type="text" placeholder="Email" name="email" value="{{ user.email }}"><br/>
+		<input type="text" placeholder="Avatar (url)" name="avatar" value="{{ user.avatar }}"><br/>
+		<input type="submit" value="MODIFICATION" class="btn btn-success"><br>
+    <a href="delete/{{ user.id }}" class="btn btn-danger">DELETE ACCOUNT</a>
+	</form>
+</div> 
+
+{% endfor %}
+
+{% endblock %}
